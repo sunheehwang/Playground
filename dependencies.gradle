@@ -12,16 +12,22 @@ ext {
 
             appCompat : '1.0.0',
             recyclerView : '1.0.0',
-            constraintLayout : '2.0.0-alpha2'
+            constraintLayout : '2.0.0-alpha2',
 
+            dagger : '2.19'
 
     ]
     libraries = [
             kotlin : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}",
             appCompat: "androidx.appcompat:appcompat:${versions.appCompat}",
             recyclerView: "androidx.recyclerview:recyclerview:${versions.recyclerView}",
-            constraintLayout : "androidx.constraintlayout:constraintlayout:${versions.constraintLayout}"
+            constraintLayout : "androidx.constraintlayout:constraintlayout:${versions.constraintLayout}",
 
+
+            dagger : "com.google.dagger:dagger:${versions.dagger}",
+            daggerSupport : "com.google.dagger:dagger-android-support:${versions.dagger}",
+            daggerProcessor : "com.google.dagger:dagger-compiler:${versions.dagger}",
+            daggerAndroidApt : "com.google.dagger:dagger-android-processor:${versions.dagger}"
 
     ]
 }
