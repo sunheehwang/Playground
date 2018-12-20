@@ -1,8 +1,7 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion versions.compileSdk
@@ -15,9 +14,12 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-        sourceSets{
-            main.java.srcDirs += 'src/main/kotlin'
+        multiDexEnabled true
+        sourceSets {
+            main {
+                java.srcDirs = ['src/main/kotlin']
+                res.srcDirs = ['src/main/res']
+            }
         }
 
     }
@@ -33,14 +35,20 @@ dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation libraries.kotlin
+
     implementation libraries.appCompat
     implementation libraries.recyclerView
     implementation libraries.constraintLayout
+    implementation libraries.workmanager
+    implementation libraries.workmanagerFirebase
 
     implementation libraries.dagger
     implementation libraries.daggerSupport
     kapt libraries.daggerProcessor
     kapt libraries.daggerAndroidApt
+
+    implementation libraries.timber
+
 
    /* implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
