@@ -17,7 +17,6 @@ android {
         multiDexEnabled true
         sourceSets {
             main {
-                java.srcDirs = ['src/main/kotlin']
                 res.srcDirs = ['src/main/res']
             }
         }
@@ -39,13 +38,36 @@ dependencies {
     implementation libraries.appCompat
     implementation libraries.recyclerView
     implementation libraries.constraintLayout
+    implementation libraries.cardview
+    implementation libraries.browser
+    implementation libraries.androidKtx
+    implementation libraries.fragmentsKtx
     implementation libraries.workmanager
     implementation libraries.workmanagerFirebase
 
     implementation libraries.dagger
     implementation libraries.daggerSupport
-    kapt libraries.daggerProcessor
-    kapt libraries.daggerAndroidApt
+    kapt libraries.daggerCompiler
+    kapt libraries.daggerAndroidProcessor
+
+    implementation libraries.flexbox
+    implementation libraries.material
+
+    implementation libraries.rxKotlin
+    implementation libraries.rxAndroid
+
+    implementation libraries.okhttp
+    implementation libraries.okhttpLogger
+    implementation libraries.retrofit
+    implementation libraries.adapterRxjava
+    implementation libraries.converterGson
+
+    kapt libraries.kotshiCompiler
+    implementation libraries.kotshiApi
+
+    implementation libraries.glide
+    kapt libraries.glideComplier
+
 
     implementation libraries.timber
 
