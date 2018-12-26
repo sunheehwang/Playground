@@ -6,16 +6,26 @@ import io.reactivex.Completable
 import io.reactivex.Maybe
 
 @Dao
-abstract class PhotoDao {
+interface PhotoDao {
 
     @Query("SELECT * FROM photos")
-    abstract fun getPhotos(): Maybe<List<PhotoEntity>>
+    fun getPhotos(): Maybe<List<PhotoEntity>>
 
     @Query("SELECT * FROM photos WHERE id =:id")
-    abstract fun getPhoto(id: Long): Maybe<PhotoEntity>
+    fun getPhoto(id: Long): Maybe<PhotoEntity>
+
+
+    /*@Transaction
+    fun setPhotos(photoEntity: List<PhotoEntity>?) {
+        deletePhotos()
+        photoEntity?.forEach {
+            insertPhoto(it)
+        }
+
+    }*/
 
     @Transaction
-    open fun setPhotos(photoEntity: List<PhotoEntity>?): Completable {
+    fun setPhotos(photoEntity: List<PhotoEntity>?): Completable {
         return Completable.fromAction {
             deletePhotos()
             photoEntity?.forEach {
@@ -25,9 +35,9 @@ abstract class PhotoDao {
     }
 
     @Query("DELETE FROM photos")
-    abstract fun deletePhotos()
+    fun deletePhotos()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertPhoto(photoEntity: PhotoEntity)
+    fun insertPhoto(photoEntity: PhotoEntity)
 
 }

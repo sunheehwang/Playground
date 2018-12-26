@@ -1,10 +1,11 @@
 package com.happy.playground.repository.api.model
 
+
 import com.happy.playground.repository.database.model.PhotoEntity
 
-data class PhotosResponse(
+data class PhotosResponse (
     val photos: List<Photo>
-) : MockableReponse()
+) : MockableResponse()
 
 data class Photo (
     val date_taken: String?,

@@ -13,8 +13,8 @@ android {
         targetSdkVersion versions.targetSdk
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        multiDexEnabled true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled false
         sourceSets {
             main {
                 res.srcDirs = ['src/main/res']
@@ -52,6 +52,16 @@ dependencies {
 
     implementation libraries.flexbox
     implementation libraries.material
+
+    implementation libraries.room
+    kapt libraries.roomCompiler
+    implementation libraries.roomRxJava
+/*
+
+    implementation libraries.lifecycleExtensions
+    kapt libraries.lifecycleCompiler
+*/
+
 
     implementation libraries.rxKotlin
     implementation libraries.rxAndroid

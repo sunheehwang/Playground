@@ -1,12 +1,15 @@
 package com.happy.playground.repository.database
 
 import android.content.Context
+import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.happy.playground.repository.database.model.PhotoEntity
 
+@Database(entities = [PhotoEntity::class], version = 1, exportSchema = false)
 abstract class MockableDatabase : RoomDatabase() {
 
-
+    abstract fun photoDao(): PhotoDao
 
 
     companion object {

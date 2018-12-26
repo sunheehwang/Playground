@@ -4,6 +4,7 @@ interface PlatformLogger {
     fun debug(s: String): Unit
     fun info(s: String): Unit
     fun warn(s: String): Unit
+    fun error(s: String): Unit
     class NoOpLogger constructor() : PlatformLogger {
         override fun debug(s: String) {
         }
@@ -12,6 +13,9 @@ interface PlatformLogger {
         }
 
         override fun warn(s: String) {
+        }
+
+        override fun error(s: String) {
         }
 
     }
