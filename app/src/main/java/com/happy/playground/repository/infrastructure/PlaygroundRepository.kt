@@ -27,24 +27,38 @@ class PlaygroundRepository constructor(
     //로컬 x, 서버 o -> serveresult
     //로컬 o, 서버 x -> localresult
     //로컬 o, 서버 o -> serveresult
+    //네트워크가 로컬액세스 보다 빠를 경우
     override fun getPhotos(): Flowable<ResultState> {
         var localResult: LocalResult? = null
-        return Flowable.concatArrayEager(
+        return Flowable.concatArray(
             photoDao.getPhotos().toFlowable().map {
-                TimberLogger.debug("local")
-                localResult = LocalResult(it)
+                synchronized(this) {
+                    localResult = LocalResult(it)
+                }
+                TimberLogger.debug("local $it")
                 localResult!!
-            }.subscribeOn(Schedulers.io()),
+            }
+                .subscribeOn(Schedulers.io()),
             getPhotosFromApi().map {
                 TimberLogger.debug("api")
-                ServerResult(it.photos) }
+                ServerResult(it.photos.toPhotoEntities()) }
                 .toFlowable()
                 .materialize()
                 .map {
                     if (it.error != null) {
-                        if (localResult != null && (localResult?.data as List<PhotoEntity>).isNotEmpty()) Notification.createOnComplete() //에러면 중지
-                        else it
+                        TimberLogger.debug("api error")
+                        synchronized(this) {
+                            if (localResult != null && (localResult?.data as List<PhotoEntity>).isNotEmpty()){
+                                TimberLogger.debug("api error1")
+                                Notification.createOnNext(localResult!!)
+                            }
+                            else {
+                                TimberLogger.debug("api error2")
+                                it
+                            }
+                        }
                     } else {
+                        TimberLogger.debug("api ")
                         it
                     }
                 }

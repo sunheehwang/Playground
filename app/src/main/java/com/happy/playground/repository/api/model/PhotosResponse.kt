@@ -15,9 +15,9 @@ data class Photo (
     val width: String?
 )
 
-fun Photo.toPhotoEntity(id: Long): PhotoEntity {
+fun Photo.toPhotoEntity(): PhotoEntity {
     return PhotoEntity(
-        id = id,
+        id = 0,
         date_taken = date_taken,
         title = title,
         url = url,
@@ -27,5 +27,5 @@ fun Photo.toPhotoEntity(id: Long): PhotoEntity {
 }
 
 fun List<Photo>?.toPhotoEntities(): List<PhotoEntity>? {
-    return this?.mapIndexed{ index, photo -> photo.toPhotoEntity(index.toLong()) }
+    return this?.map{ it.toPhotoEntity() }
 }

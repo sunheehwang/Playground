@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.happy.playground.R
+import com.happy.playground.photos.adapter.PhotosAdapter
 import com.happy.playground.repository.api.model.Photo
 import com.happy.playground.repository.data.LocalResult
 import com.happy.playground.repository.data.ServerResult
@@ -32,6 +33,8 @@ class PhotosFragment : Fragment() {
     @Inject
     lateinit var repository: PlaygroundRepository
 
+    private lateinit var photosAdapter : PhotosAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
@@ -43,11 +46,19 @@ class PhotosFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupRecyclerView()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         getPhotos()
+    }
+
+    private fun setupRecyclerView() {
+        photosAdapter = PhotosAdapter{
+
+        }
+        recycler_view.adapter = photosAdapter
     }
 
     @SuppressWarnings("CheckResult")
@@ -60,8 +71,9 @@ class PhotosFragment : Fragment() {
                 when (it) {
                     is ServerResult -> {
                         it.data?.let {
-                            TimberLogger.debug("getPhotos serverresult ${(it as List<Photo>)}")
+                            TimberLogger.debug("getPhotos serverresult ${(it as List<PhotoEntity>)}")
                             container.showSnackbar("server !!!!", Snackbar.LENGTH_INDEFINITE)
+                            photosAdapter.setData(it)
                         }
                     }
 
@@ -69,6 +81,7 @@ class PhotosFragment : Fragment() {
                         it.data?.let {
                             TimberLogger.debug("getPhotos localresult ${(it as List<PhotoEntity>)}")
                             container.showSnackbar("local !!!!",Snackbar.LENGTH_INDEFINITE)
+                            photosAdapter.setData(it)
                         }
                     }
                 }
