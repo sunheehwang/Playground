@@ -1,8 +1,5 @@
 package com.happy.playground.repository.data
 
-sealed class ResultState
-class ServerResult(val data: Any?) : ResultState()
-class LocalResult(val data: Any?) : ResultState()
-
-class ServerError() : ResultState()
-class LocalError() : ResultState()
+sealed class ResultState<out T>(val data: T)
+class ServerResult<T>(data: T) : ResultState<T>(data)
+class LocalResult<T>(data: T) : ResultState<T>(data)

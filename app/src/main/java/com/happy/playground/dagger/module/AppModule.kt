@@ -68,8 +68,11 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideGsonBuilder() : GsonBuilder {
+    fun provideGson() : Gson {
         return GsonBuilder()
+
+            .create()
+
     }
 
     @Provides
@@ -87,11 +90,11 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideMockableApiService(okHttpClient: OkHttpClient, gsonBuilder: GsonBuilder): MockableApiService {
+    fun provideMockableApiService(okHttpClient: OkHttpClient, gson: Gson): MockableApiService {
         return Retrofit.Builder()
             .baseUrl(END_POINT)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create(gsonBuilder.create()))
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .client(okHttpClient)
             .build()
             .create(MockableApiService::class.java)
