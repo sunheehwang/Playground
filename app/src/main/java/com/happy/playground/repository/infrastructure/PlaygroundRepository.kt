@@ -82,6 +82,6 @@ class PlaygroundRepository constructor(
     }
 
     companion object {
-        var DEBOUNCE_TIMEOUT_MILLISECONDS = if (BuildConfig.DEBUG) 750L else 550L
+        var DEBOUNCE_TIMEOUT_MILLISECONDS = if (BuildConfig.DEBUG) 750L else 750L
     }
 }
