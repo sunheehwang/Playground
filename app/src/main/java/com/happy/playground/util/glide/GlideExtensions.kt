@@ -43,10 +43,10 @@ fun ImageView?.loadImage(defaultResId: Int, url: String?, radius: Int){
     }
 }
 
-fun ImageView?.loadImage(url: String?){
+fun ImageView?.loadImage(url: String?, ratio: Float = 1f){
     this?.let {
         GlideApp.with(this).load(url)
-            .override(this.width, this.height)
+            .override((this.width * ratio).toInt(), (this.height * ratio).toInt())
             .into(this)
     }
 }

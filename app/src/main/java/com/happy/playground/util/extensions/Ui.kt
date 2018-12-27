@@ -1,6 +1,7 @@
 package com.happy.playground.util.extensions
 
 import android.app.Activity
+import android.content.res.Resources
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -63,3 +64,10 @@ fun View.showSnackbar(message: String, duration: Int = Snackbar.LENGTH_SHORT) =
     Snackbar.make(this, message, duration).show()
 
 
+val Int.px: Int
+    get() = (this / Resources.getSystem().displayMetrics.density).toInt()
+val Int.dp: Int
+    get() = (this * Resources.getSystem().displayMetrics.density).toInt()
+
+val Float.dp: Float
+    get() = this * Resources.getSystem().displayMetrics.density

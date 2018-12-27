@@ -5,12 +5,15 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.happy.playground.BuildConfig
+import com.happy.playground.repository.Repository
 import com.happy.playground.repository.api.MockableApiService
 import com.happy.playground.repository.api.MockableApiService.Companion.END_POINT
 import com.happy.playground.repository.database.MockableDatabase
 import com.happy.playground.repository.database.PhotoDao
 import com.happy.playground.repository.infrastructure.PlaygroundRepository
 import com.happy.playground.util.PlatformLogger
+import com.happy.playground.util.PlaygroundSchedulers
+import com.happy.playground.util.Schedulers
 import com.happy.playground.util.TimberLogger
 import dagger.Module
 import dagger.Provides
@@ -99,8 +102,14 @@ class AppModule {
             .build()
             .create(MockableApiService::class.java)
     }
+
     @Provides
     @Singleton
-    fun providePlaygroundRepository(mockableApiService: MockableApiService,photoDao: PhotoDao): PlaygroundRepository = PlaygroundRepository(mockableApiService, photoDao)
+    fun provideSchedulers(): Schedulers = PlaygroundSchedulers
+
+
+    @Provides
+    @Singleton
+    fun provideRepository(mockableApiService: MockableApiService,photoDao: PhotoDao, schedulers: Schedulers): Repository = PlaygroundRepository(mockableApiService, photoDao, schedulers)
 
 }

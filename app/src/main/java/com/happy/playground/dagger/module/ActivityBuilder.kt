@@ -4,6 +4,9 @@ import com.happy.playground.MainActivity
 import com.happy.playground.dagger.scope.PerActivity
 import com.happy.playground.photos.di.PhotosFragmentProvider
 import com.happy.playground.photos.di.PhotosModule
+import com.happy.playground.photos.photo.di.PhotoFragmentProvider
+import com.happy.playground.photos.photo.di.PhotoModule
+import com.happy.playground.photos.photo.ui.PhotoActivity
 import com.happy.playground.photos.ui.PhotosActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -18,4 +21,8 @@ abstract class ActivityBuilder {
     @PerActivity
     @ContributesAndroidInjector(modules = [PhotosModule::class, PhotosFragmentProvider::class])
     abstract fun bindPhotosActivity(): PhotosActivity
+
+    @PerActivity
+    @ContributesAndroidInjector(modules = [PhotoModule::class, PhotoFragmentProvider::class])
+    abstract fun bindPhotoActivity(): PhotoActivity
 }

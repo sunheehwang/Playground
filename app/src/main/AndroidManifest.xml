@@ -18,20 +18,20 @@
                   android:screenOrientation="portrait"
                   android:theme="@style/AppTheme"
                   android:windowSoftInputMode="adjustResize">
-          <!--  <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+            <!--  <intent-filter>
+                  <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>-->
+                  <category android:name="android.intent.category.LAUNCHER"/>
+              </intent-filter>-->
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data
                         android:host="playground"
-                        android:scheme="playground" />
+                        android:scheme="playground"/>
             </intent-filter>
         </activity>
 
@@ -46,6 +46,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity android:name=".photos.photo.ui.PhotoActivity"
+                  android:configChanges="orientation"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/AppTheme"
+                  android:windowSoftInputMode="adjustResize"/>
 
 
     </application>

@@ -10,16 +10,17 @@ import com.happy.playground.repository.data.ResultState
 import com.happy.playground.repository.data.ServerResult
 import com.happy.playground.repository.database.PhotoDao
 import com.happy.playground.repository.database.model.PhotoEntity
+import com.happy.playground.util.Schedulers
 import com.happy.playground.util.TimberLogger
 import io.reactivex.Flowable
 import io.reactivex.Notification
 import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
 class PlaygroundRepository constructor(
     private val mockableApiService: MockableApiService,
-    private val photoDao: PhotoDao
+    private val photoDao: PhotoDao,
+    private val schedulers: Schedulers
 ) : Repository {
 
 
@@ -30,15 +31,14 @@ class PlaygroundRepository constructor(
     //네트워크가 로컬액세스 보다 빠를 경우
     override fun getPhotos(): Flowable<ResultState<List<PhotoEntity>?>> {
         var localResult: LocalResult<List<PhotoEntity>?>? = null
-        return Flowable.concatArray(
+        return Flowable.concatArrayEager(
             photoDao.getPhotos().toFlowable().map {
                 synchronized(this) {
                     localResult = LocalResult(it)
                 }
                 TimberLogger.debug("local $it")
                 localResult!!
-            }
-                .subscribeOn(Schedulers.io()),
+            },
             getPhotosFromApi().map {
                 TimberLogger.debug("api")
                 ServerResult(it.photos.toPhotoEntities()) }
@@ -63,16 +63,21 @@ class PlaygroundRepository constructor(
                     }
                 }
                 .dematerialize<ResultState<List<PhotoEntity>?>>()
-                .subscribeOn(Schedulers.io())
-        ).debounce(DEBOUNCE_TIMEOUT_MILLISECONDS, TimeUnit.MILLISECONDS)
+                .debounce(DEBOUNCE_TIMEOUT_MILLISECONDS, TimeUnit.MILLISECONDS)
+        )
     }
+
+
+    override fun getPhotosFromDb(): Flowable<LocalResult<List<PhotoEntity>?>> =
+        photoDao.getPhotos().toFlowable().map { LocalResult<List<PhotoEntity>?>(it) }
+
 
     private fun getPhotosFromApi(): Single<PhotosResponse> {
         return mockableApiService.getPhotos()
             .doAfterSuccess {
                 TimberLogger.debug("db!! setPhotos")
                 photoDao.setPhotos(it.photos.toPhotoEntities())
-                    .subscribeOn(Schedulers.io())
+                    .subscribeOn(schedulers.io())
                     .subscribe({
                         TimberLogger.debug("setPhoto complete")
                     }, {

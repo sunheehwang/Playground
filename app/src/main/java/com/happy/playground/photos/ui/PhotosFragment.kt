@@ -8,32 +8,35 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.happy.playground.R
 import com.happy.playground.photos.adapter.PhotosAdapter
-import com.happy.playground.repository.api.model.Photo
+import com.happy.playground.photos.photo.ui.newIntentForPhotoActivity
+import com.happy.playground.repository.Repository
 import com.happy.playground.repository.data.LocalResult
 import com.happy.playground.repository.data.ServerResult
 import com.happy.playground.repository.database.model.PhotoEntity
-import com.happy.playground.repository.infrastructure.PlaygroundRepository
+import com.happy.playground.util.Schedulers
 import com.happy.playground.util.TimberLogger
 import com.happy.playground.util.extensions.inflate
 import com.happy.playground.util.extensions.showSnackbar
 import dagger.android.support.AndroidSupportInjection
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_photos.*
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 fun newPhotosFragment(): Fragment {
-    return PhotosFragment()
+    return PhotosFragment().apply {
+
+    }
 }
 
 class PhotosFragment : Fragment() {
 
     @Inject
-    lateinit var repository: PlaygroundRepository
+    lateinit var repository: Repository
 
-    private lateinit var photosAdapter : PhotosAdapter
+    @Inject
+    lateinit var schedulers: Schedulers
+
+    private lateinit var photosAdapter: PhotosAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidSupportInjection.inject(this)
@@ -55,8 +58,10 @@ class PhotosFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        photosAdapter = PhotosAdapter{
-
+        photosAdapter = PhotosAdapter { position ->
+            activity?.let {
+                it.startActivity(it.newIntentForPhotoActivity(position))
+            }
         }
         recycler_view.adapter = photosAdapter
     }
@@ -65,8 +70,8 @@ class PhotosFragment : Fragment() {
     private fun getPhotos() {
         Timber.d("getPhoto")
         repository.getPhotos()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(schedulers.io())
+            .observeOn(schedulers.mainThread())
             .subscribe({
                 when (it) {
                     is ServerResult -> {
@@ -80,14 +85,14 @@ class PhotosFragment : Fragment() {
                     is LocalResult -> {
                         it.data?.let {
                             TimberLogger.debug("getPhotos localresult ${(it as List<PhotoEntity>)}")
-                            container.showSnackbar("local !!!!",Snackbar.LENGTH_INDEFINITE)
+                            container.showSnackbar("local !!!!", Snackbar.LENGTH_INDEFINITE)
                             photosAdapter.setData(it)
                         }
                     }
                 }
             }, {
                 TimberLogger.debug("error getPhotos")
-                container.showSnackbar("error offline !!!!",Snackbar.LENGTH_INDEFINITE)
+                container.showSnackbar("error offline !!!!", Snackbar.LENGTH_INDEFINITE)
             })
     }
 
