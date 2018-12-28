@@ -93,7 +93,11 @@ ext {
             glide                   : "com.github.bumptech.glide:glide:${versions.glide}",
             glideComplier           : "com.github.bumptech.glide:compiler:${versions.glide}",
 
-            timber                  : "com.jakewharton.timber:timber:${versions.timber}"
+            timber                  : "com.jakewharton.timber:timber:${versions.timber}",
+
+            // For testing
+            junit                   : "junit:junit:$versions.junit",
+            mockito                 : "org.mockito:mockito-core:$versions.mockito"
 
     ]
 

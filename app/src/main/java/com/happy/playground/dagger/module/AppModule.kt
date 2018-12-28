@@ -72,9 +72,9 @@ class AppModule {
     fun provideMoshi() : Moshi {
         return Moshi.Builder()
             .add(AppJsonAdapterFactory.INSTANCE)
-            .add(TimestampAdapter(CalendarISO8601Converter()))
-            //.add(java.lang.Long::class.java, ISO8610Date::class.java, TimestampAdapter(CalendarISO8601Converter()))
-            //.add(Long::class.java, ISO8610Date::class.java, TimestampAdapter(CalendarISO8601Converter()))
+            //.add(TimestampAdapter(CalendarISO8601Converter()))
+            .add(java.lang.Long::class.java, ISO8610Date::class.java, TimestampAdapter(CalendarISO8601Converter()))
+            .add(Long::class.java, ISO8610Date::class.java, TimestampAdapter(CalendarISO8601Converter()))
             .add(java.lang.Long::class.java, EnsureLong::class.java, EnsuresLongAdapter())
             .add(Long::class.java, EnsureLong::class.java, EnsuresLongAdapter())
             .build()
