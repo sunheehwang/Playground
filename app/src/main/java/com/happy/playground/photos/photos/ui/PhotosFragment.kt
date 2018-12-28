@@ -23,7 +23,6 @@ import com.squareup.moshi.Moshi
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_photos.*
 import javax.inject.Inject
-import com.squareup.moshi.JsonAdapter
 
 
 
@@ -85,10 +84,10 @@ class PhotosFragment : Fragment() {
 
 
         //"2015-04-26 23:04:07"
-       /* val photo = Photo(1430057047000, "this is title", "http://www.daum.net", 1234, 567 )
+        val photo = Photo(1430057047000, "this is title", "http://www.daum.net", 1234, 567 )
         val jsonAdapter = moshi.adapter<Photo>(Photo::class.java)
         val json = jsonAdapter.toJson(photo)
-        TimberLogger.debug("json=$json")*/
+        TimberLogger.debug("json=$json")
     }
 
     private fun setupRecyclerView() {
