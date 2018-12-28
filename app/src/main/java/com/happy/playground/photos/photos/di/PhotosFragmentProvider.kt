@@ -1,6 +1,6 @@
-package com.happy.playground.photos.di
+package com.happy.playground.photos.photos.di
 
-import com.happy.playground.photos.ui.PhotosFragment
+import com.happy.playground.photos.photos.ui.PhotosFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

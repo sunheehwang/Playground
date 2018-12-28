@@ -107,9 +107,11 @@ class AppModule {
     @Singleton
     fun provideSchedulers(): Schedulers = PlaygroundSchedulers
 
+/*
 
     @Provides
     @Singleton
     fun provideRepository(mockableApiService: MockableApiService,photoDao: PhotoDao, schedulers: Schedulers): Repository = PlaygroundRepository(mockableApiService, photoDao, schedulers)
+*/
 
 }

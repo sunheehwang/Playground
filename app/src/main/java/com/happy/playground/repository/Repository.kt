@@ -9,5 +9,5 @@ import io.reactivex.Single
 
 interface Repository {
     fun getPhotos() : Flowable<ResultState<List<PhotoEntity>?>>
-    fun getPhotosFromDb() : Flowable<LocalResult<List<PhotoEntity>?>>
+    fun getPhotosFromDb() : Flowable<ResultState<List<PhotoEntity>?>>
 }

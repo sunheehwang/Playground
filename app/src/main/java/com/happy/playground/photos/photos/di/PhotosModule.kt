@@ -1,4 +1,4 @@
-package com.happy.playground.photos.di
+package com.happy.playground.photos.photos.di
 
 import dagger.Module
 

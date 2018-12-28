@@ -5,6 +5,7 @@ import com.happy.playground.repository.Repository
 import com.happy.playground.repository.api.MockableApiService
 import com.happy.playground.repository.api.model.PhotosResponse
 import com.happy.playground.repository.api.model.toPhotoEntities
+import com.happy.playground.repository.data.ErrorResult
 import com.happy.playground.repository.data.LocalResult
 import com.happy.playground.repository.data.ResultState
 import com.happy.playground.repository.data.ServerResult
@@ -16,8 +17,9 @@ import io.reactivex.Flowable
 import io.reactivex.Notification
 import io.reactivex.Single
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class PlaygroundRepository constructor(
+class PlaygroundRepository @Inject constructor(
     private val mockableApiService: MockableApiService,
     private val photoDao: PhotoDao,
     private val schedulers: Schedulers
@@ -41,20 +43,25 @@ class PlaygroundRepository constructor(
             },
             getPhotosFromApi().map {
                 TimberLogger.debug("api")
-                ServerResult(it.photos.toPhotoEntities()) }
+                ServerResult(it.photos.toPhotoEntities())
+            }
                 .toFlowable()
                 .materialize()
                 .map {
                     if (it.error != null) {
                         TimberLogger.debug("api error")
                         synchronized(this) {
-                            if (!(localResult?.data?.isNullOrEmpty()?:false)){
+                            if (!(localResult?.data?.isNullOrEmpty() ?: false)) {
                                 TimberLogger.debug("api error1")
                                 Notification.createOnNext(localResult!!)
-                            }
-                            else {
+                            } else {
                                 TimberLogger.debug("api error2")
-                                it
+                                Notification.createOnNext(
+                                    ErrorResult<List<PhotoEntity>?>(
+                                        null,
+                                        it.error?.message ?: ""
+                                    )
+                                )
                             }
                         }
                     } else {
@@ -68,8 +75,21 @@ class PlaygroundRepository constructor(
     }
 
 
-    override fun getPhotosFromDb(): Flowable<LocalResult<List<PhotoEntity>?>> =
-        photoDao.getPhotos().toFlowable().map { LocalResult<List<PhotoEntity>?>(it) }
+    override fun getPhotosFromDb(): Flowable<ResultState<List<PhotoEntity>?>> =
+        photoDao.getPhotos()
+            .map {
+                LocalResult<List<PhotoEntity>?>(it)
+            }
+            .toFlowable()
+            .materialize()
+            .map {
+                if (it.error != null) {
+                    Notification.createOnNext(ErrorResult<List<PhotoEntity>?>(null,it.error?.message ?: ""))
+                } else {
+                    it
+                }
+            }
+            .dematerialize()
 
 
     private fun getPhotosFromApi(): Single<PhotosResponse> {

@@ -1,4 +1,4 @@
-package com.happy.playground.photos.ui
+package com.happy.playground.photos.photos.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

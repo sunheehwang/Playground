@@ -56,11 +56,11 @@ dependencies {
     implementation libraries.room
     kapt libraries.roomCompiler
     implementation libraries.roomRxJava
-/*
 
     implementation libraries.lifecycleExtensions
+    implementation libraries.lifecycleReactivestreams
     kapt libraries.lifecycleCompiler
-*/
+    implementation libraries.viewmodelKtx
 
 
     implementation libraries.rxKotlin

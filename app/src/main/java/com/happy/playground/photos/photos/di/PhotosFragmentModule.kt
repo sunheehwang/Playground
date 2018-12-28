@@ -1,4 +1,4 @@
-package com.happy.playground.photos.photo.di
+package com.happy.playground.photos.photos.di
 
 import com.happy.playground.repository.Repository
 import com.happy.playground.repository.api.MockableApiService
@@ -8,8 +8,9 @@ import com.happy.playground.util.Schedulers
 import dagger.Module
 import dagger.Provides
 
+
 @Module
-class PhotoFragmentModule {
+class PhotosFragmentModule {
     @Provides
     fun provideRepository(
         mockableApiService: MockableApiService,

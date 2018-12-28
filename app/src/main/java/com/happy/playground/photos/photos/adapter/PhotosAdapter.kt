@@ -1,4 +1,4 @@
-package com.happy.playground.photos.adapter
+package com.happy.playground.photos.photos.adapter
 
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +13,8 @@ import kotlinx.android.synthetic.main.item_photo.view.*
 class PhotosAdapter(private val listener : (Int) -> Unit): RecyclerView.Adapter<PhotosAdapter.ViewHolder>() {
 
     private val photoEntities: MutableList<PhotoEntity> = mutableListOf()
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(parent.inflate(R.layout.item_photo))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+        ViewHolder(parent.inflate(R.layout.item_photo))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(position, photoEntities[position], listener)
 
