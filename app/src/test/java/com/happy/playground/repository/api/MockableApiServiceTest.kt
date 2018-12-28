@@ -64,7 +64,7 @@ class MockableApiServiceTest {
             println(message)
         })
 
-        interceptor.level = HttpLoggingInterceptor.Level.HEADERS
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
         return interceptor
     }
     @Test
