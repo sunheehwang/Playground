@@ -2,26 +2,24 @@ package com.happy.playground.dagger.module
 
 import android.app.Application
 import android.content.Context
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.happy.playground.BuildConfig
-import com.happy.playground.repository.Repository
 import com.happy.playground.repository.api.MockableApiService
 import com.happy.playground.repository.api.MockableApiService.Companion.END_POINT
 import com.happy.playground.repository.database.MockableDatabase
 import com.happy.playground.repository.database.PhotoDao
-import com.happy.playground.repository.infrastructure.PlaygroundRepository
 import com.happy.playground.util.PlatformLogger
 import com.happy.playground.util.PlaygroundSchedulers
 import com.happy.playground.util.Schedulers
 import com.happy.playground.util.TimberLogger
+import com.happy.playground.util.typeadapter.*
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -71,11 +69,15 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideGson() : Gson {
-        return GsonBuilder()
-
-            .create()
-
+    fun provideMoshi() : Moshi {
+        return Moshi.Builder()
+            .add(AppJsonAdapterFactory.INSTANCE)
+            .add(TimestampAdapter(CalendarISO8601Converter()))
+            //.add(java.lang.Long::class.java, ISO8610Date::class.java, TimestampAdapter(CalendarISO8601Converter()))
+            //.add(Long::class.java, ISO8610Date::class.java, TimestampAdapter(CalendarISO8601Converter()))
+            .add(java.lang.Long::class.java, EnsureLong::class.java, EnsuresLongAdapter())
+            .add(Long::class.java, EnsureLong::class.java, EnsuresLongAdapter())
+            .build()
     }
 
     @Provides
@@ -93,11 +95,11 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideMockableApiService(okHttpClient: OkHttpClient, gson: Gson): MockableApiService {
+    fun provideMockableApiService(okHttpClient: OkHttpClient, moshi: Moshi): MockableApiService {
         return Retrofit.Builder()
             .baseUrl(END_POINT)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .client(okHttpClient)
             .build()
             .create(MockableApiService::class.java)

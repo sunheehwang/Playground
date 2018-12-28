@@ -55,7 +55,8 @@ class PlaygroundRepository @Inject constructor(
                                 TimberLogger.debug("api error1")
                                 Notification.createOnNext(localResult!!)
                             } else {
-                                TimberLogger.debug("api error2")
+                                it.error?.printStackTrace()
+                                TimberLogger.debug("api error2 ${it.error?.message}")
                                 Notification.createOnNext(
                                     ErrorResult<List<PhotoEntity>?>(
                                         null,

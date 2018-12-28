@@ -66,6 +66,9 @@ dependencies {
     implementation libraries.rxKotlin
     implementation libraries.rxAndroid
 
+    implementation libraries.moshi
+    implementation libraries.moshiKotlin
+
     implementation libraries.okhttp
     implementation libraries.okhttpLogger
     implementation libraries.retrofit

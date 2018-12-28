@@ -29,6 +29,7 @@ ext {
             rxKotlin                : '2.3.0',
             rxAndroid               : '2.1.0',
 
+            moshi                   : '1.8.0',
             okhttp                  : '3.11.0',
             retrofit                : '2.4.0',
 
@@ -76,11 +77,14 @@ ext {
             rxKotlin                : "io.reactivex.rxjava2:rxkotlin:${versions.rxKotlin}",
             rxAndroid               : "io.reactivex.rxjava2:rxandroid:${versions.rxAndroid}",
 
+            moshi                   : "com.squareup.moshi:moshi:${versions.moshi}",
+            moshiKotlin             : "com.squareup.moshi:moshi-kotlin:${versions.moshi}",
+
             okhttp                  : "com.squareup.okhttp3:okhttp:${versions.okhttp}",
             okhttpLogger            : "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
             retrofit                : "com.squareup.retrofit2:retrofit:${versions.retrofit}",
             adapterRxjava           : "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}",
-            converterGson           : "com.squareup.retrofit2:converter-gson:${versions.retrofit}",
+            converterGson           : "com.squareup.retrofit2:converter-moshi:${versions.retrofit}",
 
 
             kotshiApi               : "se.ansman.kotshi:api:${versions.kotshi}",

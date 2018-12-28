@@ -10,7 +10,7 @@ data class PhotoEntity(
     val id: Long,
 
     @ColumnInfo(name = "date_taken")
-    val date_taken: String?,
+    val date_taken: Long?,
 
     @ColumnInfo(name = "title")
     val title: String?,
@@ -19,8 +19,8 @@ data class PhotoEntity(
     val url: String?,
 
     @ColumnInfo(name = "height")
-    val height: String?,
+    val height: Long?,
 
     @ColumnInfo(name = "width")
-    val width: String?
+    val width: Long?
 )

@@ -41,7 +41,7 @@ class PhotoDetailsAdapter: RecyclerView.Adapter<PhotoDetailsAdapter.ViewHolder> 
                 text_title.text = photoEntity.title
                 text_photo_size.text = listOf(photoEntity.width, photoEntity.height).joinToString ("x")
                 text_photo_url.text = photoEntity.url
-                text_date.text = photoEntity.date_taken
+                text_date.text = photoEntity.date_taken.toString()
             }
         }
     }
